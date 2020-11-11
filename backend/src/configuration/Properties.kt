@@ -1,13 +1,12 @@
 package me.alekseinovikov.blog.configuration
 
-import io.ktor.application.*
 import io.ktor.config.*
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
 
-fun Application.registerProperties() = Kodein.Module(name = "properties") {
-    bind<DatabaseProperties>() with singleton { createDatabaseProperties(environment.config) }
+fun registerProperties(config: ApplicationConfig) = Kodein.Module(name = "properties") {
+    bind<DatabaseProperties>() with singleton { createDatabaseProperties(config) }
 }
 
 data class DatabaseProperties(

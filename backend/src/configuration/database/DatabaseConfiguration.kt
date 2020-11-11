@@ -1,4 +1,4 @@
-package me.alekseinovikov.blog.configuration
+package me.alekseinovikov.blog.configuration.database
 
 import io.ktor.application.*
 import io.r2dbc.pool.ConnectionPoolConfiguration
@@ -6,6 +6,7 @@ import io.r2dbc.postgresql.PostgresqlConnectionConfiguration
 import io.r2dbc.postgresql.PostgresqlConnectionFactory
 import io.r2dbc.spi.ConnectionFactory
 import kotlinx.coroutines.reactive.awaitSingle
+import me.alekseinovikov.blog.configuration.DatabaseProperties
 import me.alekseinovikov.blog.repository.ConnectionPool
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
