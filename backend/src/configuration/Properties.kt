@@ -12,19 +12,23 @@ fun Application.registerProperties() = Kodein.Module(name = "properties") {
 
 data class DatabaseProperties(
         val host: String,
-        val port: String,
+        val port: Int,
         val database: String,
         val username: String,
-        val password: String
+        val password: String,
+        val poolSize: Int,
+        val maxIdleSeconds: Long
 )
 
 private fun createDatabaseProperties(config: ApplicationConfig) =
         config.config("ktor").config("database").let {
             DatabaseProperties(
                     host = it["host"],
-                    port = it["port"],
+                    port = it["port"].toInt(),
                     username = it["username"],
                     password = it["password"],
-                    database = it["password"]
+                    database = it["password"],
+                    poolSize = it["poolSize"].toInt(),
+                    maxIdleSeconds = it["maxIdleSeconds"].toLong()
             )
         }

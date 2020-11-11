@@ -1,10 +1,13 @@
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val kodein_version: String by project
+val reactor_kotlin_extention_version: String by project
+val r2dbc_postgres_version: String by project
+val r2dbc_pool_version: String by project
+val coroutines_reactor_version: String by project
 
 plugins {
     application
@@ -32,6 +35,10 @@ dependencies {
     implementation("io.ktor:ktor-server-host-common:$ktor_version")
     implementation("io.ktor:ktor-jackson:$ktor_version")
     implementation("org.kodein.di:kodein-di-generic-jvm:$kodein_version")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:$reactor_kotlin_extention_version")
+    implementation("io.r2dbc:r2dbc-postgresql:$r2dbc_postgres_version")
+    implementation("io.r2dbc:r2dbc-pool:$r2dbc_pool_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$coroutines_reactor_version")
 
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 }
