@@ -88,7 +88,6 @@ body {
 
 .post-box {
   font-family: 'Roboto', sans-serif;
-  text-align: justify;
 
   margin-top: 2em;
   padding-left: 3em;
@@ -96,7 +95,9 @@ body {
 }
 
 .post-box p {
+  text-align: left;
   font-size: larger;
+  word-break: break-word;
 }
 
 .post-box .link a h4 {
