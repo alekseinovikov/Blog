@@ -8,6 +8,8 @@ import io.ktor.routing.*
 import me.alekseinovikov.blog.configuration.configureWeb
 import me.alekseinovikov.blog.configuration.database.migrateDatabase
 import me.alekseinovikov.blog.configuration.registerDIDependencies
+import me.alekseinovikov.blog.controller.Controller
+import org.kodein.di.generic.allInstances
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -18,6 +20,9 @@ fun Application.module(testing: Boolean = false) {
     val kodein = registerDIDependencies()
     migrateDatabase(kodein)
     configureWeb()
+
+    val controllers: List<Controller> by kodein.allInstances<Controller>()
+    controllers.forEach { controller -> controller.routing() }
 
     routing {
         get("/") {
