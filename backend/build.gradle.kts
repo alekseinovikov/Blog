@@ -11,7 +11,7 @@ val coroutines_reactor_version: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.21"
 }
 
 group = "me.alekseinovikov.blog"
