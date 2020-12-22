@@ -1,5 +1,6 @@
 package me.alekseinovikov.blog.service.health
 
+import kotlinx.coroutines.runBlocking
 import me.alekseinovikov.blog.repository.ConnectionPool
 import me.alekseinovikov.blog.repository.querySingle
 import me.alekseinovikov.blog.service.HealthService
@@ -11,6 +12,13 @@ class HealthServiceImpl(private val connectionPool: ConnectionPool) : HealthServ
             checkService(),
             checkDB()
         )
+
+    override fun checkHealthBlocking(): Map<String, String> = runBlocking {
+        mapOf(
+            checkService(),
+            checkDB()
+        )
+    }
 
     private fun checkService() = "SERVICE" to "OK"
     private suspend fun checkDB() = try {

@@ -13,6 +13,7 @@ class MainController(private val healthService: HealthService) : Controller {
     override fun register(routing: Routing): Routing = with(routing) {
         root()
         healthCheck()
+        healthCheckBlocking()
         static()
 
         return@with this
@@ -27,6 +28,12 @@ class MainController(private val healthService: HealthService) : Controller {
     private fun Routing.healthCheck() {
         get("/health") {
             call.respond(healthService.checkHealth())
+        }
+    }
+
+    private fun Routing.healthCheckBlocking() {
+        get("/health-blocking") {
+            call.respond(healthService.checkHealthBlocking())
         }
     }
 
