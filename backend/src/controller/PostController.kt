@@ -7,17 +7,29 @@ import io.ktor.routing.*
 import me.alekseinovikov.blog.service.post.PostService
 
 class PostController(private val postService: PostService) : Controller {
+
     override fun register(routing: Routing): Routing = with(routing) {
         route("/posts") {
             getById()
+            getPreviews()
         }
         return@with this
     }
 
     private fun Route.getById() {
         get("/{id}") {
-            val id = call.parameters["id"]?.toLong() ?: throw IllegalArgumentException("id")
-            postService.getById(id)?.let { call.respond(it) } ?: call.respond(status = HttpStatusCode.NotFound, "Not found")
+            respondOrNotFound {
+                val id = getLongParam("id")
+                postService.getById(id)
+            }
+        }
+    }
+
+    private fun Route.getPreviews() {
+        get {
+            respondOrNotFound {
+                postService.getPreviews()
+            }
         }
     }
 

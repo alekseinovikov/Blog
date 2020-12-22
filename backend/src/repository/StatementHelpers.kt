@@ -4,6 +4,7 @@ import io.r2dbc.spi.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
+import reactor.core.publisher.Flux
 import reactor.kotlin.core.publisher.toFlux
 import reactor.kotlin.core.publisher.toMono
 
@@ -28,14 +29,13 @@ fun ConnectionPool.executeUpdateStatementBlocking(statement: String) = runBlocki
 }
 
 suspend fun <T> ConnectionPool.queryList(statement: String, mapper: (Row, RowMetadata) -> T): List<T> = getConnection().use { connection ->
-    val eventList: List<Result> = connection.createStatement(statement)
+    connection.createStatement(statement)
         .execute()
         .toFlux()
-        .collectList()
+        .flatMap { res ->
+            Flux.from(res.map(mapper))
+        }.collectList()
         .awaitFirst()
-
-    eventList
-        .map { it.map { row, meta -> mapper(row, meta) }.awaitFirst() }
 }
 
 suspend fun <T> ConnectionPool.querySingle(statement: String, mapper: (Row, RowMetadata) -> T): T? = getConnection().use { connection ->
