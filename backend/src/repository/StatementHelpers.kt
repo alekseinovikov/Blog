@@ -5,6 +5,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toFlux
 import reactor.kotlin.core.publisher.toMono
 
@@ -31,8 +32,8 @@ fun ConnectionPool.executeUpdateStatementBlocking(statement: String) = runBlocki
 suspend fun <T> ConnectionPool.queryList(statement: String, mapper: (Row, RowMetadata) -> T): List<T> = getConnection().use { connection ->
     connection.createStatement(statement)
         .execute()
-        .toFlux()
-        .flatMap { res ->
+        .toMono()
+        .flatMapMany { res ->
             Flux.from(res.map(mapper))
         }.collectList()
         .awaitFirst()
