@@ -1,9 +1,6 @@
 package me.alekseinovikov.blog.repository
 
-import io.r2dbc.spi.Closeable
-import io.r2dbc.spi.Result
-import io.r2dbc.spi.Row
-import io.r2dbc.spi.RowMetadata
+import io.r2dbc.spi.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
@@ -41,11 +38,22 @@ suspend fun <T> ConnectionPool.queryList(statement: String, mapper: (Row, RowMet
         .map { it.map { row, meta -> mapper(row, meta) }.awaitFirst() }
 }
 
-suspend fun <T> ConnectionPool.querySingle(statement: String, mapper: (Row, RowMetadata) -> T): T = getConnection().use { connection ->
-    val event: Result = connection.createStatement(statement)
+suspend fun <T> ConnectionPool.querySingle(statement: String, mapper: (Row, RowMetadata) -> T): T? = getConnection().use { connection ->
+    connection.createStatement(statement)
         .execute()
         .toMono()
-        .awaitFirst()
+        .awaitFirstOrNull()
+        ?.map { row, meta -> mapper(row, meta) }
+        ?.awaitFirstOrNull()
+}
 
-    event.map { row, meta -> mapper(row, meta) }.awaitFirst()
+suspend fun <T> ConnectionPool.querySingle(statement: String, params: Map<String, Any>, mapper: (Row, RowMetadata) -> T): T? = getConnection().use { connection ->
+    val parametrizedStatement = connection.createStatement(statement).also {
+        params.forEach { (key, value) -> it.bind(key, value) }
+    }
+    parametrizedStatement.execute()
+        .toMono()
+        .awaitFirstOrNull()
+        ?.map { row, meta -> mapper(row, meta) }
+        ?.awaitFirstOrNull()
 }

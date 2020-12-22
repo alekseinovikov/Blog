@@ -4,14 +4,14 @@ import io.ktor.application.*
 import io.ktor.routing.*
 import me.alekseinovikov.blog.controller.Controller
 import me.alekseinovikov.blog.controller.MainController
+import me.alekseinovikov.blog.controller.PostController
 import org.kodein.di.Kodein
-import org.kodein.di.generic.allInstances
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
+import org.kodein.di.bindings.subTypes
+import org.kodein.di.generic.*
 
 fun registerControllers() = Kodein.Module(name = "controllers") {
-    bind<Controller>() with provider { MainController(instance()) }
+    bind() from singleton { MainController(instance()) }
+    bind() from singleton { PostController(instance()) }
 }
 
 fun Application.configureControllers(kodein: Kodein) {

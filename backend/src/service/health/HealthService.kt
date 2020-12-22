@@ -1,4 +1,4 @@
-package me.alekseinovikov.blog.service
+package me.alekseinovikov.blog.service.health
 
 interface HealthService {
     suspend fun checkHealth(): Map<String, String>

@@ -6,7 +6,7 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.utils.io.*
-import me.alekseinovikov.blog.service.HealthService
+import me.alekseinovikov.blog.service.health.HealthService
 
 class MainController(private val healthService: HealthService) : Controller {
 

@@ -3,7 +3,6 @@ package me.alekseinovikov.blog.service.health
 import kotlinx.coroutines.runBlocking
 import me.alekseinovikov.blog.repository.ConnectionPool
 import me.alekseinovikov.blog.repository.querySingle
-import me.alekseinovikov.blog.service.HealthService
 
 class HealthServiceImpl(private val connectionPool: ConnectionPool) : HealthService {
 

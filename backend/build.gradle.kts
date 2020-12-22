@@ -8,6 +8,7 @@ val reactor_kotlin_extention_version: String by project
 val r2dbc_postgres_version: String by project
 val r2dbc_pool_version: String by project
 val coroutines_reactor_version: String by project
+val jackson_version: String by project
 
 plugins {
     application
@@ -34,6 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-host-common:$ktor_version")
     implementation("io.ktor:ktor-jackson:$ktor_version")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
     implementation("org.kodein.di:kodein-di-generic-jvm:$kodein_version")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:$reactor_kotlin_extention_version")
     implementation("io.r2dbc:r2dbc-postgresql:$r2dbc_postgres_version")
